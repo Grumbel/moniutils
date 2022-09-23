@@ -10,16 +10,20 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-      in rec {
-        packages = flake-utils.lib.flattenTree rec {
+      in {
+        packages = rec {
+          default = moniutils;
+
           moniutils = pkgs.python3Packages.buildPythonPackage rec {
             name = "moniutils";
+
             src = ./.;
+
             propagatedBuildInputs = [
               pkgs.python3Packages.xlib
             ];
           };
         };
-        defaultPackage = packages.moniutils;
-      });
+      }
+    );
 }
